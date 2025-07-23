@@ -20,7 +20,9 @@ join projects_durations pdm
 on pdm.id = lep.project_id
 group by  lep.emp_id, lep.project_id)
 
--- step 3 & 4 : calculate prorated salary for each employee then aggregate on project title level
+-- step 3 : calculate prorated salary for each employee then aggregate on project title level
+  -- only keep risky projects where the estimated budget is higher than the planned budget
+  -- order by project title
 select lp.title, lp.budget, ceiling(sum(temp.prorated_salary)) as budget_estimate
 from
 (select le.id, edm.project_id, edm.total_duration, le.salary * total_duration as prorated_salary
